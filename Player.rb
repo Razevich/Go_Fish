@@ -24,18 +24,11 @@ class Player
 
 	#Used for clearing a set of cards from player hand when all 4 cards 
 	#are gathered by one player
+	#or if a card is selected by another player during their turn
 	def remove_set_from_hard(card)
 		@cards.delete(card)
 	end
 
-	#this will remove a card if another player selects a card that player has
-	def remove_card_from_hand(card)
-		if @cards[card] == 1
-			@cards.delete(card)
-		else
-			@cards[card] = @cards[card] -1
-		end
-	end
 
 	def add_card(card)
 		if has_card?(card)
@@ -55,9 +48,13 @@ class Player
 	#if first player correctly guesses once of second players cards
 	def give_card_to_player(card,player)
 		#player is another player object
-		player.add_card(card)
-		#remove card from own side
-		self.remove_card_from_hand(card)
+		@cards[card].times do
+			player.add_card(card)
+		end
+
+
+		#remove cards from hand if selected by another player
+		self.remove_set_from_hand(card)
 	end
 
 	def valid_choice?(choice)
