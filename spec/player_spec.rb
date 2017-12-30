@@ -2,6 +2,7 @@ require_relative '../Player'
 require_relative '../Go_fish'
 require_relative '../Deck'
 require_relative '../Computer'
+
 describe Player do
 
 	before do
@@ -52,7 +53,7 @@ describe Player do
 				play = @player
 				play.add_card('W')
 				expect(play.has_card?('W')).to eq(true)
-				play.remove_card_from_hand('W')
+				play.remove_set_from_hand('W')
 				expect(play.has_card?('W')).to eq(false)
 
 			end
@@ -110,4 +111,19 @@ describe Player do
 			end
 		end
 	end
+
+	describe "player_has_cards" do
+		context "check to see if player has no cards" do
+			it "gives player cards if they have none" do
+				@player.cards = {}
+				expect(@player.has_cards?).to eq(false)
+
+				@go_fish.player_out_of_cards(@player)
+				expect(@player.cards.count).to eq(5)
+
+			end
+		end
+	end
+
+
 end

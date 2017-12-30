@@ -13,6 +13,19 @@ class Go_Fish
 		assign_cards_to_players
 	end
 
+	def player_out_of_cards(player)
+		card_count = @deck.values.inject(0){|a,b| a+b }
+
+		if card_count >= 5
+			5.times do
+				player.add_card(random_card)
+			end
+		else
+			card_count.times do
+				player.add_card(random_card)
+			end
+		end
+	end
 	#this is only for the start
 	#this is probably a horrible way to code this, refactor at later date for speed
 	def assign_cards_to_players
@@ -41,10 +54,6 @@ class Go_Fish
 
 	def game_over?
 		@deck.size == 0
-	end
-
-	def go_fish(player)
-		player.add_card(random_card)
 	end
 
 	def calculate_winner(players)

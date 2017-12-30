@@ -14,13 +14,18 @@ round = 1
 
 
 until game.game_over?
-	players.each do |play|
+	players.each do |player|
 
-		if play.name == 'Player_1'
-			puts "These are your cards"
-			play.show_cards
+		if !player.has_cards?
+			game.player_out_of_cards(player)
 		end
-		play.turn(players)
+
+		if player.name == 'Player_1'
+			puts "These are your cards"
+			player.show_cards
+		end
+
+		player.turn(players, game.deck)
 	end
 
 	puts "End of round #{round}"

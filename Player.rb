@@ -1,6 +1,8 @@
+require './Deck'
+
 class Player
 
-	attr_accessor :cards, :complete_sets, :name
+	attr_accessor :cards, :complete_sets, :name 
 
 	def initialize(cards = {}, complete_sets = [], name)
 		@name = name
@@ -13,7 +15,7 @@ class Player
 		if @cards.has_value?(4)
 			completed_card = card
 			@complete_sets.push(completed_card)
-			remove_set_from_hard(completed_card)
+			remove_set_from_hand(completed_card)
 		end
 
 	end
@@ -25,7 +27,7 @@ class Player
 	#Used for clearing a set of cards from player hand when all 4 cards 
 	#are gathered by one player
 	#or if a card is selected by another player during their turn
-	def remove_set_from_hard(card)
+	def remove_set_from_hand(card)
 		@cards.delete(card)
 	end
 
@@ -70,7 +72,35 @@ class Player
 		return false
 	end
 
-	def turn(players)
+	def has_cards?
+		@cards.count != 0
+	end
+
+	def pulled_same_card_as_guess?(card, guess)
+		puts card 
+		puts guess
+		card == guess
+	end
+
+	def random_card(deck)
+		card = deck.keys.sample
+		remove_card_from_deck(card, deck)
+		return card
+	end
+
+	def remove_card_from_deck(card, deck)
+		deck[card] = deck[card] - 1
+		if deck[card] == 0
+			deck.delete(card)
+		end
+	end
+
+	def go_fish(deck)
+		return random_card(deck)
+	end
+
+
+	def turn(players, deck)
 		#This is only here because players_choice needs to live outside the loop in where it is set down below
 		players_choice = ''
 
@@ -103,16 +133,21 @@ class Player
 
 		puts "you selected #{card} from #{players_choice.name}"
 
-		return
 
 		if players_choice.has_card?(card)
-			puts "#{players_choice} has a #{card}! Now you have it!"
+			puts "#{players_choice.name} has a #{card}! Now you have them!"
 			players_choice.give_card_to_player(card, self)
 		else
 			puts " Go fish"
-			self.add_card(random_card)
+			go_fish_card = go_fish(deck)
+			self.add_card(go_fish_card)
+			
+			if(pulled_same_card_as_guess?(go_fish_card, card))
+				puts "You got the same card! Go again!"
+				sleep(1)
+				self.turn(players,deck)
+			end
 		end
-
 
 	end
 
