@@ -34,4 +34,4 @@ until game.game_over?
 
 end
 
-puts game.calculate_winner(players)
+game.calculate_results(players)

@@ -56,17 +56,24 @@ class Go_Fish
 		@deck.size == 0
 	end
 
-	def calculate_winner(players)
-		lead_player = ''
-		lead_player_size = 0
-
-		players.each do |player|
-			if player.complete_sets.length > lead_player_size
-				lead_player = player
-				lead_player_size = player.complete_sets.length
-			end
+	def calculate_results(players)
+		results = Array.new(4,[])
+		players.each_with_index do |player, index|
+			results[index] = [player.complete_sets.length, player.name]
 		end
-		return "#{lead_player.name} wins! with a set count of #{lead_player_size}"
+
+		results = results.sort
+
+		puts "In first place we have #{results[3][1]} with a total of #{results[3][0]}"
+		sleep(1)
+		puts "In second place we have #{results[2][1]} with a total of #{results[2][0]}"
+		sleep(1)
+		puts "In third place we have #{results[1][1]} with a total of #{results[1][0]}"
+		sleep(1)
+		puts "In last place we have #{results[0][1]} with a total of #{results[0][0]}"
+		sleep(1)
+
+		puts "Congradulations to our winner and better luck next time to the rest!"
 	end
 
 end
