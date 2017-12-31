@@ -24,7 +24,5 @@ class Deck
 		return deck
 	end
 
-	
-
 
 end

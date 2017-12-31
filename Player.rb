@@ -77,8 +77,6 @@ class Player
 	end
 
 	def pulled_same_card_as_guess?(card, guess)
-		puts card 
-		puts guess
 		card == guess
 	end
 
@@ -138,6 +136,7 @@ class Player
 			puts "#{players_choice.name} has a #{card}! Now you have them!"
 			players_choice.give_card_to_player(card, self)
 		else
+			return if deck.size == 0
 			puts " Go fish"
 			go_fish_card = go_fish(deck)
 			self.add_card(go_fish_card)
@@ -146,6 +145,9 @@ class Player
 				puts "You got the same card! Go again!"
 				sleep(1)
 				self.turn(players,deck)
+			else
+				puts "You got a #{go_fish_card}!"
+				sleep(1)
 			end
 		end
 
