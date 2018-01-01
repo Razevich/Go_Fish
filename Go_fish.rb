@@ -53,12 +53,16 @@ class Go_Fish
 	end
 
 	def game_over?
-		@deck.size == 0
+		@players.each do |player|
+			return false if player.has_cards?
+		end
+
+		return true
 	end
 
-	def calculate_results(players)
+	def calculate_results
 		results = Array.new(4,[])
-		players.each_with_index do |player, index|
+		@players.each_with_index do |player, index|
 			results[index] = [player.complete_sets.length, player.name]
 		end
 
